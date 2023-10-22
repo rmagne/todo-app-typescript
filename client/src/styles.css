@@ -1,0 +1,144 @@
+:root{
+    --primary: #0F63E2;             
+    --primary-light: #7AA8F5;      
+    --primary-dark: #004BBF;        
+    --background: #F5F5F7;          
+    --text-primary: #333333;       
+    --text-secondary: #666666;      
+    --white: #FFFFFF;           
+    --border: #DDDDDD;  
+    --delete: #D32F2F;     
+    --secondary: #FF8C00; 
+    --secondary-light: #FFB747; 
+    --secondary-dark: #C65E00;      
+}
+
+* {
+  margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+
+body {
+  font-family: "Nunito Sans", sans-serif;
+  padding: 32px 64px;
+  background-color: var(--background);
+  width: 100%;
+  height: 100%;
+}
+
+h1,h4{
+  padding: 32px 0;
+}
+
+button{
+  cursor: pointer;
+  background: var(--secondary);
+  border: none;
+  padding: 8px 24px;
+  border-radius: 4px;
+  color: var(--white);
+}
+
+
+.todo{
+  margin: 24px 0;
+  padding: 16px 32px;;
+  border: solid 1px var(--border);
+  color: var(--text-primary);
+  background-color: var(--white);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.is-checked p{
+  text-decoration: line-through;
+}
+
+
+.check{
+  width: 16px;
+  height: 16px;
+  border-radius: 999999px;
+  border: solid 1px var(--secondary-light);
+}
+
+.is-checked .check{
+  background-color: var(--secondary);
+}
+
+p{
+  padding-left: 32px;
+}
+
+.cross{
+  text-decoration: none;
+  margin-left: auto;
+  color: var(--white);
+  background: var(--delete);
+  border-radius: 4px;
+  padding: 4px 12px;
+}
+
+.delete{
+  background: none;
+  margin-left: auto;
+  color: var(--text-secondary);
+}
+
+
+
+.Modal {
+  text-align: center;
+  border-radius: 16px;
+  width: 512px;
+  position: fixed;
+  top: 40vh;
+  left: calc(50vw - 256px);
+  background-color: var(--white);
+  padding: 16px 0 32px;
+  box-shadow: 0px 2px 6px #737373;
+}
+
+input{
+  display: block;
+  margin: 0 auto 32px;
+  border-radius: 4px;
+  border: solid 1px rgb(215, 215, 215);
+  height: 48px;
+  width: 410px;
+  padding: 8px;
+}
+
+*:focus{
+  outline: none;
+}
+
+
+.buttonsDiv{
+  width: 100%;
+  text-align: right;
+  padding-bottom: 32px;
+  padding-right: 16px;
+}
+
+
+#openModalBtn{
+  border-radius: 99999999px;
+ height: 48px;
+ width: 48px;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ font-size: 1.5rem;
+ position: fixed;
+ top: 128px;
+ right: 64px;
+background: var(--primary);
+}
+
+.addTodoButton{
+  width: 80%;
+}
