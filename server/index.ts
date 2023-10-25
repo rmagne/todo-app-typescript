@@ -12,10 +12,12 @@ const port = process.env.PORT || 3001;
 
 const db_uri = process.env.DB_URI;
 
+if (!db_uri) {
+  throw new Error("DB_URI is not defined in .env file");
+}
+
 mongoose
-  .connect(
-    "mongodb+srv://romif:vjFqO2j2dBho7LTT@cluster0.k1h7bvo.mongodb.net/todo_typescript?retryWrites=true&w=majority"
-  )
+  .connect(db_uri)
   .then(() => console.log("Connected to db"))
   .catch((err) => console.log(err));
 

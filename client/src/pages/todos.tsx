@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import IPage from "../Interfaces/page";
-import ITodo from "../Interfaces/todo";
+import IPage from "../interfaces/page";
+import ITodo from "../interfaces/todo";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const API_BASE = "http://localhost:3001";
+
+if (!API_BASE) throw new Error("API_BASE is not defined!");
 
 const Todos: React.FunctionComponent<IPage> = (props) => {
   const [todos, setTodos] = useState<ITodo[]>([]);
