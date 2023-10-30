@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext } from "react";
 import { DEFAULT_FIRE_TOKEN, DEFAULT_USER } from "../interfaces/user";
 import IUser from "../interfaces/user";
 
@@ -15,7 +15,7 @@ export interface IUserActions {
   };
 }
 
-export const InitialUserState: IUserState = {
+export const initialUserState: IUserState = {
   user: DEFAULT_USER,
   fire_token: DEFAULT_FIRE_TOKEN,
 };
@@ -31,7 +31,7 @@ export const userReducer = (state: IUserState, action: IUserActions) => {
 
     case "logout": {
       localStorage.removeItem("fire_token");
-      return InitialUserState;
+      return initialUserState;
     }
 
     default:
@@ -45,10 +45,8 @@ export interface IUserContextProps {
 }
 
 const UserContext = createContext<IUserContextProps>({
-  userState: InitialUserState,
+  userState: initialUserState,
   userDispatch: () => {},
 });
 
-export const UserContextConsumer = UserContext.Consumer;
-export const UserContextProvider = UserContext.Provider;
 export default UserContext;

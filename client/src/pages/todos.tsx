@@ -3,6 +3,7 @@ import IPage from "../interfaces/page";
 import ITodo from "../interfaces/todo";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "../styles.css";
 
 const API_BASE = "http://localhost:3001";
 

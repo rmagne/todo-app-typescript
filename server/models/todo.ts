@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import ITodo from "../interfaces/todo";
 
-const TodoSchema = new Schema<ITodo>({
+const TodoSchema: Schema = new Schema<ITodo>({
   text: {
     type: String,
     required: true,

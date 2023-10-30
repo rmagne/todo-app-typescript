@@ -1,16 +1,14 @@
 :root{
-    --primary: #0F63E2;             
+    --primary: #0e5fd8;             
     --primary-light: #7AA8F5;      
-    --primary-dark: #004BBF;        
+    --primary-dark: #0342a1;        
     --background: #F5F5F7;          
     --text-primary: #333333;       
     --text-secondary: #666666;      
     --white: #FFFFFF;           
     --border: #DDDDDD;  
     --delete: #D32F2F;     
-    --secondary: #FF8C00; 
-    --secondary-light: #FFB747; 
-    --secondary-dark: #C65E00;      
+    
 }
 
 * {
@@ -32,13 +30,21 @@ h1,h4{
   padding: 32px 0;
 }
 
+.container{
+  text-align: center;
+ }
+
 button{
   cursor: pointer;
-  background: var(--secondary);
+  background: var(--primary-dark);
   border: none;
   padding: 8px 24px;
   border-radius: 4px;
   color: var(--white);
+}
+
+button:hover{
+  background: #03275d;
 }
 
 
@@ -62,11 +68,12 @@ button{
   width: 16px;
   height: 16px;
   border-radius: 999999px;
-  border: solid 1px var(--secondary-light);
+  border: solid 1px var(--primary-light);
+  cursor: pointer;
 }
 
 .is-checked .check{
-  background-color: var(--secondary);
+  background-color: var(--primary);
 }
 
 p{
@@ -92,14 +99,14 @@ p{
 
 .Modal {
   text-align: center;
-  border-radius: 16px;
+  border-radius: 8px;
   width: 512px;
   position: fixed;
   top: 40vh;
   left: calc(50vw - 256px);
   background-color: var(--white);
   padding: 16px 0 32px;
-  box-shadow: 0px 2px 6px #737373;
+  box-shadow: 0px 1px 4px #737373;
 }
 
 input{
@@ -134,11 +141,51 @@ input{
  align-items: center;
  font-size: 1.5rem;
  position: fixed;
- top: 128px;
+ top: 192px;
  right: 64px;
-background: var(--primary);
 }
 
 .addTodoButton{
   width: 80%;
+}
+
+
+ul li a {
+  color: #000;
+  text-decoration: none;
+ }
+ 
+ ul li a:hover {
+  color: var(--primary-light);
+ }
+ 
+ ul li a.active {
+  color: var(--primary-light);
+ }
+
+ ul li {
+  list-style: none;
+ }
+
+.buttonParagraph{
+  display: inline-block;
+  padding: 0;
+  margin-left: 8px;
+}
+
+.SignInModal{
+  width: 256px;
+  left: calc(50vw - 128px);
+  padding: 16px 0;
+  border-radius: 4px;
+}
+
+.loginButton{
+  padding: 8px;
+  background-color: rgb(255, 52, 52);
+  color: var(--white);
+}
+
+.loginButton:hover{
+  background-color: rgb(156, 0, 0);
 }
