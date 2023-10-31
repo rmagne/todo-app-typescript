@@ -8,19 +8,19 @@ async function extractFirebaseInfo(
 ) {
   const fire_token = req.headers.authorization?.split("Bearer ")[1];
 
-  try {
-    if (fire_token) {
-      const result = await firebaseAdmin.auth().verifyIdToken(fire_token);
-      if (result) {
-        res.locals.firebase = result;
-        res.locals.fire_token = fire_token;
-      }
-    }
-  } catch (err) {
-    return res.status(401).json(err);
+  if (!fire_token) {
+    return res.status(401).json({ error: "No token provided." });
   }
 
-  next();
+  try {
+    const decodedToken = await firebaseAdmin.auth().verifyIdToken(fire_token);
+    res.locals.firebase = decodedToken;
+    res.locals.fire_token = fire_token;
+    next();
+  } catch (err) {
+    console.error("Token verification error:", err);
+    return res.status(401).json({ error: "Token verification failed." });
+  }
 }
 
 export default extractFirebaseInfo;

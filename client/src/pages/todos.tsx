@@ -1,22 +1,32 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import IPage from "../interfaces/page";
 import ITodo from "../interfaces/todo";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../styles.css";
+import UserContext from "../contexts/userContext";
 
 const API_BASE = "http://localhost:3001";
+const token = localStorage.getItem("fire_token");
 
 if (!API_BASE) throw new Error("API_BASE is not defined!");
 
 const Todos: React.FunctionComponent<IPage> = (props) => {
+  const userContext = useContext(UserContext);
+  const user = userContext.userState;
+  let userid = user.user._id;
+
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [newTodo, setNewTodo] = useState<string>("");
   const [addingTodo, setAddingTodo] = useState<boolean>(false);
 
-  const displayTodos = async (): Promise<void> => {
+  const displayTodos = async (userid: string): Promise<void> => {
     try {
-      const response = await fetch(API_BASE + "/todos");
+      const response = await fetch(API_BASE + `/todos/${userid}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setTodos(data);
     } catch (err) {
@@ -25,7 +35,9 @@ const Todos: React.FunctionComponent<IPage> = (props) => {
   };
 
   useEffect(() => {
-    displayTodos();
+    if (token) {
+      displayTodos(userid);
+    }
   }, []);
 
   const addNewTodo = async (): Promise<void> => {
@@ -33,10 +45,12 @@ const Todos: React.FunctionComponent<IPage> = (props) => {
       const response = await fetch(API_BASE + "/todos/new", {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           text: newTodo,
+          user: userid,
         }),
       });
       if (!response.ok) {
@@ -55,6 +69,9 @@ const Todos: React.FunctionComponent<IPage> = (props) => {
     try {
       const response = await fetch(API_BASE + `/todos/delete/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -70,6 +87,9 @@ const Todos: React.FunctionComponent<IPage> = (props) => {
     try {
       const response = await fetch(API_BASE + `/todos/check/${id}`, {
         method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response.ok) {
         throw new Error("Network response was not ok");

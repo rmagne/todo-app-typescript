@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC7L1O51CTPvq46yLAYxNNvtQ8dz7n78ng",
@@ -15,4 +15,5 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 export const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
+
+export default app;

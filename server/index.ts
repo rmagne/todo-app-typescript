@@ -37,6 +37,7 @@ mongoose
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(extractFirebaseInfo);
+app.use(express.json());
 
 //routes
 app.use("/todos", todo_routes);

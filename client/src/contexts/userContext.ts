@@ -9,10 +9,7 @@ export interface IUserState {
 
 export interface IUserActions {
   type: "login" | "logout";
-  payload: {
-    user: IUser;
-    fire_token: string;
-  };
+  payload: IUserState;
 }
 
 export const initialUserState: IUserState = {

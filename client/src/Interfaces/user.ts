@@ -1,13 +1,13 @@
 export default interface IUser {
   _id: string;
   uid: string;
-  username: string;
+  name: string;
 }
 
 export const DEFAULT_USER: IUser = {
   _id: "",
   uid: "",
-  username: "",
+  name: "",
 };
 
 export const DEFAULT_FIRE_TOKEN = "";

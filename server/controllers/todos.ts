@@ -4,7 +4,8 @@ import { Request, Response } from "express";
 
 const getTodos = async (req: Request, res: Response): Promise<void> => {
   try {
-    const todos: ITodo[] = await Todo.find();
+    const userid = req.params.userid;
+    const todos: ITodo[] = await Todo.find({ user: userid });
     res.json(todos);
   } catch (err) {
     res.status(500).json({
@@ -16,8 +17,10 @@ const getTodos = async (req: Request, res: Response): Promise<void> => {
 const addTodo = async (req: Request, res: Response): Promise<void> => {
   try {
     const todoText = req.body.text;
+    const userid = req.body.user;
     const todo: ITodo = new Todo({
       text: todoText,
+      user: userid,
     });
     await todo.save();
     res.json(todo);

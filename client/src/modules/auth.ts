@@ -10,49 +10,40 @@ export const signInWithSocialMedia = async () => {
   return signInWithPopup(auth, provider);
 };
 
-export const authenticate = async (
+export const Authenticate = async (
   uid: string,
   name: string,
   fire_token: string
-) => {
-  try {
-    const response = await fetch(API_BASE + "/users/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${fire_token}`,
-      },
-      body: JSON.stringify({ uid, name }),
-    });
-    if (
-      response.status === 200 ||
-      response.status === 201 ||
-      response.status === 304
-    ) {
-      const data = await response.json();
-      return data.user;
-    } else {
-      console.error("Unable to authenticate");
-    }
-  } catch (err) {
-    console.error("Unable to authenticate");
+): Promise<IUser> => {
+  const response = await fetch(`${API_BASE}/users/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${fire_token}`,
+    },
+    body: JSON.stringify({ uid, name }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to authenticate");
   }
+
+  const responseData = await response.json();
+  return responseData.user;
 };
 
-export const validate = async (fire_token: string) => {
-  try {
-    const response = await fetch(API_BASE + "/users/validate", {
-      headers: {
-        Authorization: `Bearer ${fire_token}`,
-      },
-    });
-    if (response.status === 200 || response.status === 304) {
-      const data = await response.json();
-      return data;
-    } else {
-      console.error("Unable to validate");
-    }
-  } catch (err) {
-    console.error("Unable to validate");
+export const Validate = async (fire_token: string): Promise<IUser> => {
+  const response = await fetch(`${API_BASE}/users/validate`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${fire_token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to validate");
   }
+
+  const responseData = await response.json();
+  return responseData.user;
 };

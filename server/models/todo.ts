@@ -10,6 +10,7 @@ const TodoSchema: Schema = new Schema<ITodo>({
     type: Boolean,
     default: false,
   },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
 const Todo = mongoose.model<ITodo>("Todos", TodoSchema);

@@ -5,24 +5,31 @@ import UserContext, {
   initialUserState,
   userReducer,
 } from "./contexts/userContext";
-import Home from "./pages/home";
 import Login from "./pages/login";
 import Todos from "./pages/todos";
 import { Routes, Route } from "react-router-dom";
+
+import { Validate } from "./modules/auth";
 import AuthRoutes from "./components/authRoutes";
 
 const App = () => {
   const [userState, userDispatch] = useReducer(userReducer, initialUserState);
 
-  const CheckLocalStorageForCredentials = () => {
+  const CheckLocalStorageForCredentials = async () => {
     const fire_token = localStorage.getItem("fire_token");
+
     if (fire_token === null) {
       userDispatch({ type: "logout", payload: initialUserState });
-    } else {
-      /*authenticate with backend */
+      return;
+    }
+
+    try {
+      const user = await Validate(fire_token);
+      userDispatch({ type: "login", payload: { user, fire_token } });
+    } catch (error) {
+      userDispatch({ type: "logout", payload: initialUserState });
     }
   };
-
   const userContextValues = {
     userState,
     userDispatch,
@@ -34,11 +41,11 @@ const App = () => {
 
   return (
     <>
-      <Navbar />
       <UserContext.Provider value={userContextValues}>
+        <Navbar />
         <Routes>
           <Route path="*" element={<NoMatch />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Login />} />
           <Route
             path="/todos"
             element={

@@ -1,34 +1,49 @@
-import { auth } from "../config/firebase";
-import { signInWithSocialMedia as SocialMediaPopup } from "../modules/auth";
 import IPage from "../interfaces/page";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { AuthProvider } from "firebase/auth";
-import { useEffect } from "react";
-import userContext from "../contexts/userContext";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../contexts/userContext";
 
-const Login: React.FunctionComponent<IPage> = () => {
+import React, { useContext, useState } from "react";
+
+import {
+  Authenticate,
+  signInWithSocialMedia as SocialMediaPopup,
+} from "../modules/auth";
+
+const Login: React.FunctionComponent<IPage> = (props) => {
+  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
   const isLogin = window.location.pathname.includes("login");
 
-  const SignInWithSocialMedia = () => {
-    return SocialMediaPopup()
-      .then(async (result) => {
-        let user = result.user;
+  const SignInWithSocialMedia = async () => {
+    try {
+      const result = await SocialMediaPopup();
+      const user = result.user;
 
-        if (user) {
-          let uid = user.uid;
-          let name = user.displayName;
+      if (!user || !user.displayName) {
+        throw new Error(
+          "The identity provider is missing necessary information."
+        );
+      }
 
-          if (name) {
-            let fire_token = await user.getIdToken();
+      const uid = user.uid;
+      const name = user.displayName;
+      const fire_token = await user.getIdToken();
 
-            /*backend auth */
-          }
-        }
-      })
-      .catch((error) => {
-        console.error(error.message);
+      const _user = await Authenticate(uid, name, fire_token);
+      userContext.userDispatch({
+        type: "login",
+        payload: { user: _user, fire_token },
       });
+      navigate("/todos");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error("An error occurred during login.");
+      }
+    }
   };
 
   return (

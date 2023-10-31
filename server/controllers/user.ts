@@ -1,57 +1,61 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import IUser from "../interfaces/user";
 import User from "../models/user";
 import mongoose from "mongoose";
-import { error } from "console";
 
-const validate = async (req: Request, res: Response) => {
+const validate = async (req: Request, res: Response, next: NextFunction) => {
+  let firebase = res.locals.firebase;
+
   try {
-    let uid = res.locals.firebase.uid;
-
-    const user = await User.findOne({ uid: uid });
-
+    const user = await User.findOne({ uid: firebase.uid });
     if (user) {
-      return res.status(200).json(user);
+      return res.status(200).json({ user });
     } else {
-      return res.status(401).json("Invalid token");
+      return res.status(401).json({ message: "user not found" });
     }
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-};
-
-const create = async (req: Request, res: Response) => {
-  try {
-    let { uid, name } = req.body;
-    let fire_token = res.locals.fire_token;
-
-    const newUser = new User({
-      _id: new mongoose.Types.ObjectId(),
-      uid: uid,
-      username: name,
+  } catch (error) {
+    return res.status(500).json({
+      error,
     });
-
-    await newUser.save();
-    return res.status(200).json({ user: newUser, fire_token });
-  } catch (err) {
-    res.status(500).json({ error: err });
   }
 };
 
-const login = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response, next: NextFunction) => {
+  let { uid, name } = req.body;
+  let fire_token = res.locals.fire_token;
+
+  const user = new User({
+    _id: new mongoose.Types.ObjectId(),
+    uid,
+    name,
+  });
+
   try {
-    let { uid } = req.body;
-    let fire_token = res.locals.firebase;
+    const newUser = await user.save();
 
-    const user = await User.findOne({ uid: uid });
+    return res.status(201).json({ user: newUser, fire_token });
+  } catch (error) {
+    return res.status(500).json({
+      error,
+    });
+  }
+};
 
+const login = async (req: Request, res: Response, next: NextFunction) => {
+  const uid = req.body.uid;
+  const fire_token = res.locals.fire_token;
+
+  try {
+    const user = await User.findOne({ uid });
     if (user) {
-      return res.status(200).json({ user: user, fire_token: fire_token });
+      return res.status(200).json({ user, fire_token });
     } else {
-      return create(req, res);
+      return create(req, res, next);
     }
-  } catch (err) {
-    res.status(500).json({ error: err });
+  } catch (error) {
+    return res.status(500).json({
+      error,
+    });
   }
 };
 
